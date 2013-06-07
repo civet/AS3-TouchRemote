@@ -1,6 +1,6 @@
 AS3-TouchRemote
 ===============
-  It's a pain to compile the IPA file using Adobe AIR SDK. We have <strong>Interpreter Mode</strong> since AIR 2.7, but performance is not good when running the App under this mode.
+  It's a pain to compile the IPA file using Adobe AIR SDK (the compile time is too long). We have <strong>Interpreter Mode</strong> since AIR 2.7, but performance is not good when running the App under this mode.
   So I made this program to turn mobile device into input device for MultiTouch project development.
   
   WARNING: Lagging a little using network to transmit touch data :(
