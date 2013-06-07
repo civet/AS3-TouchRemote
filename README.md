@@ -14,6 +14,20 @@ Build
   <li>we need <a href="http://www.adobe.com/devnet/air/native-extensions-for-air/extensions/networkinfo.html" target="_blank">this ANE</a> to implement NetworksInfo API on iOS.</li>
 </ul>
 
+Usage
+===============
+  Note: Client must connect to the right IP address and port which Server is binding.  
+  Example:
+<pre><code>//LAN Setting
+var server:Server = new Server("0.0.0.0", 8686);
+var client:Client = new Server("here is your server ip on LAN", 8686);
+</code></pre>
+
+<pre><code>//Local Setting (while your are running server-side app on the same machine)
+var server:Server = new Server("127.0.0.1", 8686);
+var client:Client = new Server("127.0.0.1", 8686);
+</code></pre>
+
 License
 ===============
   Copyright © 2013 civet, dreamana.com.  
