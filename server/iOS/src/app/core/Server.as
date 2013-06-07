@@ -72,12 +72,14 @@ package app.core
 		
 		private function onClientData(event:ProgressEvent):void
 		{
+			/*
 			var client:Socket = event.currentTarget as Socket;
 			
 			var buffer:ByteArray = new ByteArray();
 			client.readBytes( buffer, 0, client.bytesAvailable );
 			
 			Logger.log("Client Data Received: " + buffer.toString());
+			*/
 		}
 		
 		public function broadcast(message:String):void

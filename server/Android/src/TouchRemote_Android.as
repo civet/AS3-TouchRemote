@@ -1,5 +1,6 @@
 package
 {
+	import app.core.PolicyServer;
 	import app.core.Server;
 	import app.utils.INetworkUtil;
 	import app.utils.NetworkUtil;
@@ -25,6 +26,7 @@ package
 	public class TouchRemote_Android extends Sprite
 	{
 		private var _server:Server;
+		private var _policyServer:PolicyServer;
 		private var _simulator:SimpleTouchSimulator;
 		private var _initialized:Boolean;
 		
@@ -62,6 +64,9 @@ package
 			}
 			
 			//server
+			if(!_policyServer) _policyServer = new PolicyServer();
+			_policyServer.start();
+			
 			if(!_server) _server = new Server();
 			_server.start();
 			
@@ -76,6 +81,7 @@ package
 			stage.removeEventListener(TouchEvent.TOUCH_END, handleTouch);
 			
 			//server
+			_policyServer.stop();
 			_server.stop();
 			
 			_initialized = false;

@@ -6,18 +6,20 @@ package app.core
 	import flash.net.ServerSocket;
 	import flash.net.Socket;
 	import flash.utils.ByteArray;
-
-	public class Server
+	
+	public class PolicyServer
 	{
 		private var _serverSocket:ServerSocket;
 		private var _address:String;
 		private var _port:int;
-		private var _clients:Array = [];
+		private var _toPort:int;
 		
-		public function Server(address:String="0.0.0.0", port:int=8686)
+		public function PolicyServer(address:String="0.0.0.0", port:int=843, toPort:int=8686)
 		{
 			_address = address;
 			_port = port;
+			
+			_toPort = toPort;
 		}
 		
 		public function start():void
@@ -35,21 +37,11 @@ package app.core
 				Logger.log(e.message);	
 			}
 			
-			Logger.log("Server started " + _address + ":" + _port);
+			Logger.log("PolicyServer started " + _address + ":" + _port);
 		}
 		
 		public function stop():void
 		{
-			var client:Socket;
-			var i:int = _clients.length;
-			while(i--) {
-				client = _clients[i];
-				
-				client.removeEventListener(ProgressEvent.SOCKET_DATA, onClientData);
-				try { client.close(); } catch(error:Error) {}
-			}
-			_clients.length = 0;
-			
 			try {
 				_serverSocket.removeEventListener(ServerSocketConnectEvent.CONNECT, onClientConnect);
 				_serverSocket.close();
@@ -65,32 +57,22 @@ package app.core
 			var client:Socket = event.socket;
 			client.addEventListener(ProgressEvent.SOCKET_DATA, onClientData);
 			
-			_clients.push( client );
-			
-			Logger.log("Client joined " + client.remoteAddress + ":" + client.remotePort);
+			Logger.log("Client request policy " + client.remoteAddress + ":" + client.remotePort);
 		}
 		
 		private function onClientData(event:ProgressEvent):void
 		{
-			/*
 			var client:Socket = event.currentTarget as Socket;
 			
 			var buffer:ByteArray = new ByteArray();
 			client.readBytes( buffer, 0, client.bytesAvailable );
 			
-			Logger.log("Client Data Received: " + buffer.toString());
-			*/
-		}
-		
-		public function broadcast(message:String):void
-		{
-			var client:Socket;
-			var i:int = _clients.length;
-			while(i--) {
-				client = _clients[i];
-				
-				this.send(client, message);
-			}	
+			//Logger.log("received: " + buffer.toString() +"\n\n");
+			//received: <policy-file-request/>
+			
+			//send policy file
+			var policyFile:String = '<cross-domain-policy><allow-access-from domain="*" to-ports="' + _toPort + '" /></cross-domain-policy>';
+			this.send(client, policyFile);
 		}
 		
 		public function send(client:Socket, message:String):void
@@ -101,12 +83,8 @@ package app.core
 				{
 					client.writeUTFBytes( message );
 					client.flush();
-				}
-				else {
-					//kick it					
-					var index:int = _clients.indexOf(client);
-					if(index >= 0) _clients.splice(index, 1);
 					
+					//close
 					client.removeEventListener(ProgressEvent.SOCKET_DATA, onClientData);
 					try { client.close(); } catch(error:Error) {}
 				}
@@ -116,8 +94,6 @@ package app.core
 				Logger.log( error.message );
 			}
 		}
-		
-		public function get clients():Array { return _clients; }
 		
 		public function get running():Boolean { return _serverSocket.listening; }
 	}
