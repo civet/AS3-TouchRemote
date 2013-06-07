@@ -18,15 +18,28 @@ Usage
 ===============
   Note: Client must connect to the right IP address and port which Server is binding.  
   Example:
-<pre><code>//LAN Setting
+  
+<ul>
+<li>LAN setting
+<pre>
+//modify server code
 var server:Server = new Server("0.0.0.0", 8686);
-var client:Client = new Server("here is your server ip on LAN", 8686);
-</code></pre>
 
-<pre><code>//Local Setting (while your are running server-side app on the same machine)
+//modify client code
+var client:Client = new Client("here is your server ip on LAN", 8686);
+</pre>
+</li>
+<li>
+LocalMachine setting (while your are running server-side app on the same machine)
+<pre>
+//modify server code
 var server:Server = new Server("127.0.0.1", 8686);
-var client:Client = new Server("127.0.0.1", 8686);
-</code></pre>
+
+//modify client code
+var client:Client = new Client("127.0.0.1", 8686);
+</pre>
+</li>
+</ul>
 
 License
 ===============
