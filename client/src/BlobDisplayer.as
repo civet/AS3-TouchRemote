@@ -17,7 +17,7 @@ package
 		
 		private function initialize(event:Event=null):void
 		{
-			if(event) this.removeEventListener(event.type, init);
+			if(event) this.removeEventListener(event.type, initialize);
 			
 			this.stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
 			this.stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
